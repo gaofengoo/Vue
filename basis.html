@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础</title>
+    <script src="js/vue.global.js"></script>
+    <script src="js/basis.js"></script>
+</head>
+<body>
+    <div id="helloVue">
+        <div>{{ message }}</div>
+        <div>counter:{{ count }}</div>
+        <div v-bind:title="hoverMessage">鼠标悬停</div>
+        <div v-on:click="reverseMessage">click</div>
+        <input type="text" v-model="message">
+        <div>
+            <span v-if="seen">显示</span>
+        </div>
+        <ol>
+            <li v-for="todo in todos" x-bind="todo.text"></li>
+        </ol>
+        <ol>
+            <todo-item v-for="item in items" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+        </ol>
+    </div>
+</body>
+</html>
