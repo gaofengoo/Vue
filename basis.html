@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>基础</title>
     <script src="js/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
     <script src="js/basis.js"></script>
 </head>
 <body>
@@ -23,6 +24,60 @@
         <ol>
             <todo-item v-for="item in items" v-bind:todo="item" v-bind:key="item.id"></todo-item>
         </ol>
+        <div v-html="rawHtml" v-bind:id="customId"></div>
+        <div>{{ count + 1 }}</div>
+        <div>{{ ok ? "YES" : "NO" }}</div>
+        <div>{{ message.split("").reverse().join("") }}</div>
+        <div v-bind:id="'list-' + customId"></div>
+        <div v-bind:[attributeName]="url">绑定属性</div>
+        <div v-on:[eventName]="doSomething">绑定事件</div>
+        <a :href="url">属性简写</a>
+        <a :[attributeName]="url">属性简写</a>
+        <div @click="reverseMessage">事件简写</div>
+        <div @[eventName]="reverseMessage">事件简写</div>
+        <div>{{ itemMessage }}</div>
+        <div>{{ firstName + ' and ' + lastName }}</div>
+        <!-- 侦听器 -->
+        <p>
+            Ask a yes/no question:
+            <input type="text" v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+        <!-- Class与Style -->
+        <div class="static" :class="classObject">Class</div>
+        <div :class="[{active: isActive}, errorClass]">Class2</div>
+        <my-component class="baz boo" :class="{ active: isActive }"></my-component>
+        <div :style="styleObject">style</div>
+        <div :style="[baseStyles, overStyles]">style1</div>
+        <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">box</div>
+        <!-- 条件渲染 -->
+        <div v-if="some">some!</div>
+        <div v-else>no</div>
+        <template v-if="some">
+            <h1>title</h1>
+            <p>one</p>
+        </template>
+        <!-- <div v-if="Math.random() > 0.5">Now you see me</div>
+        <div v-else>Now you don't</div> -->
+        <div v-if="type === 'A'">A</div>
+        <div v-else-if="type === 'B'">B</div>
+        <div v-else>Not A/B</div>
+        <div v-show="!some">Hello!</div>
+        <!-- 列表渲染 -->
+        <ul>
+            <li v-for="(item, index) in items">
+                {{ parentMessage + '-' + index + '-' + item.name}}
+            </li>
+        </ul>
+        <ul>
+            <li v-for="(value, name, index) in myObject">{{index + '.' + name + ':' + value }}</li>
+        </ul>
+        <my-component2 v-for="(item, index) in items" :key="item.id" :name="item.name" @remove="items.splice(index, 1)"></my-component2>
+        <!-- 事件处理 -->
+        <div :style="style1" @scroll.passive="onScroll">
+            <div :style="style2"></div>
+        </div>
+        <input type="text" @click.left="eventUp($event)"></div>
     </div>
 </body>
 </html>
