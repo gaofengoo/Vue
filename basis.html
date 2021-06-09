@@ -77,7 +77,55 @@
         <div :style="style1" @scroll.passive="onScroll">
             <div :style="style2"></div>
         </div>
-        <input type="text" @click.left="eventUp($event)"></div>
+        <input type="text" @click.left="eventUp($event)">
+        <!-- 表单输入绑定 -->
+        <input type="text" v-model.trim="textMessage">
+        <p>{{ textMessage }}</p>
+        <textarea v-model="textareaMessage" cols="30" rows="5"></textarea>
+        <p>{{ textareaMessage }}</p>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+        <br>
+        <div>
+            <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+            <label for="jack">Jack</label>
+            <input type="checkbox" id="john" value="John" v-model="checkedNames">
+            <label for="john">John</label>
+            <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+            <label for="mike">Mike</label>
+            <br>
+            <span>{{ checkedNames }}</span>
+        </div>
+        <div>
+            <input type="radio" id="one" value="One" v-model="picked">
+            <label for="one">One</label>
+            <input type="radio" id="two" value="Two" v-model="picked">
+            <label for="two">Two</label>
+            <br>
+            <span>{{ picked }}</span>
+        </div>
+        <div>
+            <select v-model="selected">
+                <option disabled value="">Please select one</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+            </select>
+            <p>{{ selected }}</p>
+        </div>
+        <div>
+            <select v-model="selected2">
+                <option v-for="option in options" :value="option.value">{{ option.text }}</option>
+            </select>
+            <p>{{ selected2 }}</p>
+        </div>
+        <!-- 组件实例 -->
+        <button-count></button-count>
+        <button-count></button-count>
+        <button-count></button-count>
+        <blog-post my="one"></blog-post>
+        <blog-post my="two"></blog-post>
+        <blog-post my="three"></blog-post>
     </div>
 </body>
 </html>

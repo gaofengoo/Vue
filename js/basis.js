@@ -60,7 +60,26 @@ window.onload = function () {
                     date: '2021-06-08'
                 },
                 style1: 'height: 200px;overflow-y: auto;',
-                style2: 'height: 1000px;'
+                style2: 'height: 1000px;',
+                textMessage: '',
+                textareaMessage: '',
+                checked: false,
+                checkedNames: [],
+                picked: '',
+                selected: '',
+                options: [
+                    {
+                        text: 'One',
+                        value: 'A'
+                    }, {
+                        text: 'Two',
+                        value: 'B'
+                    }, {
+                        text: 'Three',
+                        value: 'C'
+                    }
+                ],
+                selected2: 'A'
             }
         },
         mounted () {
@@ -143,6 +162,22 @@ window.onload = function () {
         `,
         props: ['name'],
         emit: ['remove']
+    });
+
+    app.component('button-count', {
+        data () {
+            return {
+                btnCount: 0
+            }
+        },
+        template: `
+            <button @click="btnCount++">{{ 'click ' + btnCount }}</button>
+        `
+    });
+
+    app.component('blog-post', {
+        props: ['my'],
+        template: `<h4>{{ my }}</h4>`
     });
 
     var vm = app.mount('#helloVue');
