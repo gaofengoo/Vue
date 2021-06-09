@@ -123,9 +123,23 @@
         <button-count></button-count>
         <button-count></button-count>
         <button-count></button-count>
-        <blog-post my="one"></blog-post>
-        <blog-post my="two"></blog-post>
-        <blog-post my="three"></blog-post>
+        <div :style="{ fontSize: postFontSize + 'em' }">
+            <blog-post 
+                v-for="post in posts" 
+                :key="post.id" 
+                :title="post.title"
+                @enlarge-text="onEnlargeText"
+            ></blog-post>
+        </div>
+        <!-- <custom-input :model-value="searchText" @update:model-value="searchText = $event"></custom-input> -->
+        <custom-input v-model="searchText"></custom-input>
+        <custom-input2 v-model="searchText2"></custom-input2>
+        <alert-box>error message</alert-box>
+        <!-- 动态组件 -->
+        <div>
+            <button v-for="tab in tabs" :key="tab" @click="currentTab = tab">{{ tab }}</button>
+            <component :is="currentTabComponent"></component>
+        </div>
     </div>
 </body>
 </html>

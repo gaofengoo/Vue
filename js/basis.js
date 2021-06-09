@@ -79,7 +79,24 @@ window.onload = function () {
                         value: 'C'
                     }
                 ],
-                selected2: 'A'
+                selected2: 'A',
+                posts: [
+                    {
+                        id: 1,
+                        title: 'one jack'
+                    }, {
+                        id: 2,
+                        title: 'one john'
+                    }, {
+                        id: 3,  
+                        title: 'one xiaohong'
+                    }
+                ],
+                postFontSize: 1,
+                modelValue: '',
+                modelValue2: '',
+                currentTab: 'Home',
+                tabs: ['Home', 'Posts', 'Archive']
             }
         },
         mounted () {
@@ -106,6 +123,9 @@ window.onload = function () {
                     active: this.isActive && !this.error,
                     'text-danger': this.error && this.error.type === 'fatal'
                 }
+            },
+            currentTabComponent () {
+                return 'tab-' + this.currentTab.toLowerCase();
             }
         },
         watch: {
@@ -135,6 +155,9 @@ window.onload = function () {
             },
             eventUp (event) {
                 console.log(event);
+            },
+            onEnlargeText (enlargeAmount) {
+                this.postFontSize += enlargeAmount;
             }
         }
     };
@@ -176,8 +199,58 @@ window.onload = function () {
     });
 
     app.component('blog-post', {
-        props: ['my'],
-        template: `<h4>{{ my }}</h4>`
+        props: ['title'],
+        template: `
+            <h4>{{ title }}</h4>
+            <button @click="$emit('enlargeText', 0.1)">Enlarge text</button>
+        `
+    });
+
+    app.component('custom-input', {
+        props: ['modelValue'],
+        emits: ['update: modelValue'],
+        template: `
+            <input :value="modelValue" @input="$emit('update: modelValue', $event.target.value)">
+        `
+    });
+
+    app.component('custom-input2', {
+        props: ['modelValue2'],
+        emits: ['update: modelValue2'],
+        template: `
+            <input v-model="value">
+        `,
+        computed: {
+            value: {
+                get () {
+                    return this.modelValue2;
+                },
+                set (value) {
+                    this.$emit('update: modelValue2', value);
+                }
+            }
+        }
+    });
+
+    app.component('alert-box', {
+        template: `
+            <div>
+                <b>Error!</b>
+                <slot></slot>
+            </div>
+        `
+    });
+
+    app.component('tab-home', {
+        template: `<div>Home component</div>`
+    });
+
+    app.component('tab-posts', {
+        template: `<div>Posts component</div>`
+    });
+
+    app.component('tab-archive', {
+        template: `<div>Archive component</div>`
     });
 
     var vm = app.mount('#helloVue');
