@@ -4,10 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>过渡和动画</title>
+    <link rel="stylesheet" href="css/transitionAndAnimation.css">
     <script src="js/vue.global.prod.js"></script>
     <script src="js/transitionAndAnimation.js"></script>
 </head>
 <body>
-    
+    <div id="animation">
+        <div>
+             <button @click="show = !show">toogle</button>
+            <transition name="fade">
+                <p v-if="show">hello</p>
+            </transiton>
+        </div>
+        <div>
+            <button @click="show2 = !show2">toogle2</button>
+            <transition name="slide-fade">
+                <p v-show="show2">hello2</p>
+            </transiton>
+        </div>
+    </div>
 </body>
 </html>
