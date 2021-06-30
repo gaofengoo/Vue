@@ -45,13 +45,48 @@ const UserProfilePreview = {};
 const UserList = {};
 const UserLayout = {};
 const UsersByIdLayout = {};
-const UserDetails = {};
 const Sidebar = {};
 const SearchUser = {};
 const User2 = {
     props: ['id'],
     template: '<div>User{{ id }}</div>'
 };
+const UserDetails = {
+    template: ``,
+    beforRouteEnter (to, from, next) {
+        next(vm => {});
+    },
+    beforeRouteUpdate (to, from) {
+        this.name = to.params.name;
+    },
+    beforeRouteLeave (to, from) {
+        const answer = window.confirm('Do you really want to leave?you have unsaved changes!');
+        if (!answer) {
+            return false;
+        }
+    }
+};
+
+function removeQueryParams (to) {
+    if (Object.keys(to.query).length) {
+        return {
+            path: to.path,
+            query: {},
+            hash: to.hash
+        }
+    }
+}
+
+function removeHash (to) {
+    if (to.hash) {
+        return {
+            path: to.path,
+            query: to.query,
+            hash: ''
+        }
+    }
+}
+
 const routes = [
     {
         path: '/',
@@ -167,11 +202,58 @@ const routes = [
         props: route => ({
             query: route.query.q
         })
+    },
+    // 路由独享的守卫
+    {
+        path: '/users2/:id',
+        component: UserDetails,
+        beforeEnter: (to, from) => {
+            return false;
+        }
+    }, {
+        path: '/users/:id',
+        component: UserDetails,
+        beforeEnter: [removeQueryParams, removeHash]
+    }, {
+        path: '/about',
+        component: UserDetails,
+        beforeEnter: [removeQueryParams]
     }
 ];
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(),
     routes
+});
+// 全局前置守卫
+router.beforeEach((to, from, /*next*/) => {
+    /*if (to.name !== 'Login' && !isAuthenticated) {
+        next({
+            name: 'Login'
+        });
+    } else {
+        next();
+    }*/
+    return false;
+});
+// 全局解析守卫
+router.beforeResolve(async to => {
+    if (to.meta.requiresCamera) {
+        try {
+            await askFroCameraPermission();
+        } catch (error) {
+            if (error instanceof NotAllowedError) {
+                return false;
+            } else {
+                throw error;
+            }
+        }
+    }
+});
+// 全局后置钩子
+router.afterEach((to, from, failure) => {
+    if (!failure) {
+        sendToAnalytics(to.fullPath);
+    }
 });
 const app = Vue.createApp({});
 app.use(router);
