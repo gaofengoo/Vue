@@ -6,7 +6,7 @@
     <title>vue-router</title>
     <script src="js/vue.global.prod.js"></script>
     <script src="js/vue-router.js"></script>
-    <script src="js/vue-router-demo.js"></script>
+    <script type="module" src="js/vue-router-demo.js"></script>
 </head>
 <body>
     <div id="app">
@@ -16,6 +16,10 @@
             <router-link-to to="/about">Go to About</router-link-to>
         </p>
         <router-view></router-view>
+        <br>
+        <router-view class="view left-sidebar" name="LeftSidebar"></router-view>
+        <router-view class="view main-sidebar"></router-view>
+        <router-view class="view right-sidebar" name="RightSidebar"></router-view>
     </div>
 </body>
 </html>
