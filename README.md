@@ -6,3 +6,5 @@
 | basis.html | 基础 |
 | transitionAndAnimation.html | 过渡和动画 |
 | deepComponent.html | 深入组件 |
+| vue-router.html | Vue Router |
+| vuex.html | Vuex |
