@@ -1,4 +1,35 @@
 const SOME_MUTATION = 'SOME_MUTATION';
+const moduleA = {
+    state: () => ({
+        count: 0
+    }),
+    mutations: {
+        increment (state) {
+            state.count++;
+        }
+    },
+    actions: {
+        incrementIfOddOnRootSum ({state, commit, rootState}) {
+            if ((state.count + rootState) % 2 === 1) {
+                commit('increment');
+            }
+        }
+    },
+    getters: {
+        doubleCount (state) {
+            return state.count * 2;
+        },
+        sumWithRootCount (state, getters, rootState) {
+            return state.count + rootState.count;
+        }
+    }
+};
+const moduleB = {
+    state: () => ({}),
+    mutations: {},
+    actions: {},
+    getters: {}
+};
 
 const store = Vuex.createStore({
     state () {
@@ -59,22 +90,87 @@ const store = Vuex.createStore({
         actionA ({commit}) {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    commit('someMutation');
+                    commit('someMutation'); // someMutation
                     resolve();
                 }, 1000);
             });
         },
         actionB ({dispatch, commit}) {
             return dispatch('actionA').then(() => {
-                commit('someOtherMution');
+                commit('someOtherMution'); // someOtherMution
             });
         },
+        /*
         async actionA ({commit}) {
-            commit('gotData', await getData());
+            commit('getData', await getData());
         },
         async actionB ({dispatch, commit}) {
             await dispatch('actionA');
-            commit('gotOtherData', await getOtherData());
+            commit('getOtherData', await getOtherData());
+        }*/
+        someOtherAction ({dispatch}) {
+            dispatch('someAction2');
+        }
+    },
+    modules: {
+        a: moduleA,
+        b: moduleB,
+        account: {
+            namespace: true,
+            state: () => ({}),
+            getters: {
+                isAdmin  () {}
+            },
+            actions: {
+                login () {}
+            },
+            mutations: {
+                login () {}
+            },
+            modules: {
+                myPage: {
+                    state: () => ({}),
+                    getters: {
+                        profile () {}
+                    }
+                }
+            },
+            posts: {
+                namespaced: true,
+                state: () => ({}),
+                getters: {
+                    popular () {}
+                }
+            }
+        },
+        foo: {
+            namespaced: true,
+            getters: {
+                someGetter (state, getters, rootState, rootGetters) {
+                    getters.someOtherGetter,
+                    rootGetters.someOtherGetter
+                },
+                someOtherGetter: state => {}
+            },
+            actions: {
+                someAction ({dispatch, commit, getters, rootGetters}) {
+                    getters.someGetter;
+                    rootGetters.someGetter;
+                    dispatch('someOtherAction');
+                    dispatch('someOtherAction', null, {root: true});
+                    commit('someMutation');
+                    commit('someMutation', null, {root: true});
+                },
+                someOtherAction (ctx, payload) {
+
+                },
+                someAction2: {
+                    root: true,
+                    handler (namespacedContext, payload) {
+
+                    }
+                }
+            }
         }
     }
 });
@@ -109,39 +205,44 @@ const app = Vue.createApp({
         ...Vuex.mapMutations({
             add: 'increment'
         }),
-        ...Vuex.mapGetters(['doneTodosCount', 'anotherGetter'])
+        ...Vuex.mapGetters(['doneTodosCount', 'anotherGetter']),
+        ...Vuex.mapState('state.some.nested.module', {
+            a: state => state.a,
+            b: state => state.b
+        })
     }),
     methods: {
         ...Vuex.mapActions(['increment', 'incrementBy']),
         ...Vuex.mapActions({
             add: 'increment'
-        })
+        }),
+        ...Vuex.mapActions('some/nested/module/foo', ['foo', 'bar'])
     }
 });
 
 app.use(store);
 
-store.commit('add', {
-    type: 'increment',
-    amount: 10
-});
+// store.commit('add', {
+//     type: 'increment',
+//     amount: 10
+// });
 
 // 分发Action
-store.dispatch('increment');
+// store.dispatch('increment');
 
 // 以载荷形式分发
-store.dispatch('increment', {
-    amount: 10
-});
+// store.dispatch('increment', {
+//     amount: 10
+// });
 
 // 以对象形式分发
-store.dispatch({
-    type: 'incrementAsync',
-    amount: 10
-});
+// store.dispatch({
+//     type: 'incrementAsync',
+//     amount: 10
+// });
 
-store.dispatch('actionA').then(() => {
+// store.dispatch('actionA').then(() => {
 
-});
+// });
 
-console.log(store.state.count, store.getters.doneTodosCount, store.getters.getTodoById(2));
+console.log(store.state.count, store.getters.doneTodosCount, store.getters.getTodoById(2), store.state.a, store.state.b);
