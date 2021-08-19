@@ -1,4 +1,4 @@
-# vue-study
+# Vue.js study
 
 #### 目录
 | 文件 | 描述 |
