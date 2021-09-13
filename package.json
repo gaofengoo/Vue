@@ -1,22 +1,21 @@
 {
-  "name": "vue-study",
+  "name": "vue",
   "version": "1.0.0",
-  "description": "",
+  "description": "#### 目录 | 文件 | 描述 | | --- | --- | | basis.html | 基础 | | transitionAndAnimation.html | 过渡和动画 | | deepComponent.html | 深入组件 | | vue-router.html | Vue Router | | vuex.html | Vuex |",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gaofengoo/vue-study.git"
+    "url": "git+https://github.com/gaofengoo/Vue.git"
   },
   "author": "gaofengoo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gaofengoo/vue-study/issues"
+    "url": "https://github.com/gaofengoo/Vue/issues"
   },
-  "homepage": "https://github.com/gaofengoo/vue-study#readme",
-  "dependencies": {},
+  "homepage": "https://github.com/gaofengoo/Vue#readme",
   "devDependencies": {
     "@vue/cli": "^4.5.13",
     "@vue/compiler-sfc": "^3.0.11",
